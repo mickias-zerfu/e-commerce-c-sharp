@@ -1,0 +1,101 @@
+Binaries
+**/bin/
+**/obj/
+
+Debug files
+**/.aps
+**/.pdb
+**/.pgc
+**/.pgd
+**/.rsp
+**/.sdd
+**/.tmp
+**/.user
+
+Visual Studio files
+**.suo
+**.user
+**.sln
+**.vspscc
+**/*.vssscc
+
+Visual Studio code analysis dependent files
+*.iads
+
+Visual Studio build output
+**/__unpackage/
+**/*.unpackage
+**/[Bb]in/
+**/[Oo]bj/
+
+Tooling
+**/node_modules
+/tools
+
+File based project storage
+/.csproj
+/.project
+
+IDE-specific files
+*.csproj.user
+*.pidb
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
+
+Local Dependency Manager caches
+.ide/
+obj/
+
+debug files
+*.apk
+*.ap_
+*.bak
+*.csproj.vspscc
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*_i.c
+*_i.h
+*.ipch
+*.log
+*.opendb
+*.opensdf
+*.pdg
+*.suo
+*.tlb
+*.user
+*.userprefs
+*.vbproj.vbproj.vspscc
+*.vspscc
+*.vssscc
+*.vsshash
+*.webinfo
+*.sln.docstates
+
+Files that should not be version controlled
+.ropeproject
+~.lock.apmlic#
+node_modules/
+
+Are files to exclude certain IDEs
+Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+#.vscode/extensions.json
+
+Visual Studio
+DotSettings.user
+
+NuGet Packages
+/.nupkg
+/packages/
+!/packages/@//analyzers/*
+!/packages/@//tools/*
+
+Temporary files
+/[Tt]mp/*
+*~
