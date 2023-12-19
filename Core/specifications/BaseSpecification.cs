@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Core.Entities;
 
 namespace Core.specifications
 {
@@ -12,7 +13,7 @@ namespace Core.specifications
         {
         }
 
-        public BaseSpecification(Expression<Func<T, bool>> criteria, List<Expression<Func<T, object>>> includes)
+        public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
         }

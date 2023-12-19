@@ -15,9 +15,10 @@ namespace Core.specifications
             AddInclude(x=>x.ProductBrand);
         }
 
-        public ProductwithTandBSpecification(Expression<Func<Product, bool>> criteria, 
-            List<Expression<Func<Product, object>>> includes) : base(criteria, includes)
+        public ProductwithTandBSpecification(int id ) : base (x =>x.Id == id )
         {
+            AddInclude(x => x.ProductType);
+            AddInclude(x=>x.ProductBrand);
         }
     }
 }
