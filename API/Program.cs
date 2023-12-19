@@ -1,3 +1,5 @@
+using API.helpers;
+using AutoMapper;
 using Core.interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -8,11 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<StoreContext>(options => options.UseSqlite(       
-builder.Configuration.GetConnectionString("DefaultConnection")       
+builder.Services.AddDbContext<StoreContext>(options => options.UseSqlite(
+builder.Configuration.GetConnectionString("DefaultConnection")
 ));
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped(typeof(IGenericRepostiory<>), typeof(GenericRepository<>));
+builder.Services.AddAutoMapper(typeof(MappinProfiles));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -33,26 +37,28 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
 app.UseAuthorization();
 
 app.MapControllers();
 
-    using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+    try
     {
-        var services = scope.ServiceProvider;
-        var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-        try
-        {
-            var context = services.GetRequiredService<StoreContext>();
-            await context.Database.MigrateAsync();
-            await StoreContextSeed.SeedAsync(context, loggerFactory);
-        }
-        catch (Exception ex)
-        {
-            var logger = loggerFactory.CreateLogger<Program>();
-            logger.LogError(ex, "An error occurred during migration");
-        }
+        var context = services.GetRequiredService<StoreContext>();
+        await context.Database.MigrateAsync();
+        await StoreContextSeed.SeedAsync(context, loggerFactory);
     }
+    catch (Exception ex)
+    {
+        var logger = loggerFactory.CreateLogger<Program>();
+        logger.LogError(ex, "An error occurred during migration");
+    }
+}
 
 app.Run();
 // }
