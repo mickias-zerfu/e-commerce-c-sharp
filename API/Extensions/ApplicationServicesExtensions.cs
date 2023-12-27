@@ -7,8 +7,10 @@ using API.Errors;
 using AutoMapper;
 using Core.interfaces; 
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace API.Extensions
 {
@@ -20,11 +22,21 @@ namespace API.Extensions
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.AddSingleton<IConnectionMultiplexer>(c=> {
+                var configuration = ConfigurationOptions
+                .Parse(config.GetConnectionString("Redis"),true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
             services.AddDbContext<StoreContext>(opt =>
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
+            services.AddDbContext<AppIdentityDbContext>(opt =>
+            {
+                opt.UseSqlite(config.GetConnectionString("IdentityConnection"));
+            });
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped(typeof(IGenericRepostiory<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<ApiBehaviorOptions>(options =>
@@ -47,7 +59,7 @@ namespace API.Extensions
             {
                 opt.AddPolicy("CorsPolicy", policy => 
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("*");
                 });
             });
 
